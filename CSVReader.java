@@ -13,7 +13,7 @@ public class CSVReader implements SupplierProductAdapter {
      */
     public ArrayList<SupplierProduct> readProducts(String fileName) {
 
-        // making a list to store the products
+        // making a list to store the products...
         ArrayList<SupplierProduct> products = new ArrayList<>();
 
         try (BufferedReader reader =

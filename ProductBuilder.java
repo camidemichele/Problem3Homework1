@@ -1,11 +1,12 @@
-
 /**
- * interface for building customized products.
+ * defines the steps for building a product.
  */
 public interface ProductBuilder {
 
-    /**
-     * creates and returns the finished product.
-     */
+    /** sets an attribute of the product. */
+    ProductBuilder setAttribute(String attribute, String value);
+
+    /** returns the finished product. */
     Product build();
 }
+

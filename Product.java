@@ -1,40 +1,30 @@
-
 /**
- * stores the basic information for a product.
+ * stores information shared by all products.
  */
-public class Product {
+public abstract class Product {
 
-    private String name;
-    private String specifications;
-    private double price;
+    protected String name;
+    protected String type;
+    protected String specs;
+    protected double price;
 
-    /**
-     * creates a product with its information.
-     */
-    public Product(String name, String specifications, double price) {
+    /** creates a product with its information. */
+    public Product(String name, String type, String specs, double price) {
         this.name = name;
-        this.specifications = specifications;
+        this.type = type;
+        this.specs = specs;
         this.price = price;
     }
 
+    /** returns the name of the product. */
     public String getName() {
         return name;
     }
 
-    public String getSpecifications() {
-        return specifications;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    /**
-     * prints the product information.
-     */
+    /** displays the product information. */
     public void displayDetails() {
         System.out.println("Product: " + name);
-        System.out.println("Specifications: " + specifications);
-        System.out.printf("Price: $%.2f%n", price);
+        System.out.println("Specifications: " + specs);
+        System.out.println("Price: $" + price);
     }
 }

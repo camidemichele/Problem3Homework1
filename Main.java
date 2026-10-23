@@ -4,24 +4,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * runs the product customization and uses builder and adapter patterns.
+ * tests the builder and adapter design patterns.
  */
 public class Main {
 
+    /** starts the program. */
     public static void main(String[] args) {
 
-        String fileName = "products.csv";
+        // stores all the CSV lines
+        ArrayList<String> csvLines = new ArrayList<>();
 
-        // first shows the csv contents
         System.out.println("CSV Contents:");
 
+        // reads the CSV file and prints its contents
         try (BufferedReader reader = new BufferedReader(
-                new FileReader(fileName))) {
+                new FileReader("products.csv"))) {
 
             String line;
 
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                System.out.println(line); // shows each CSV line
+                csvLines.add(line); // saves it for later
             }
 
         } catch (IOException e) {
@@ -29,77 +32,76 @@ public class Main {
             return;
         }
 
-        // customizes a laptop step by step using builder
-        Product customizedLaptop = new LaptopBuilder()
-                .setProcessor("Intel i5")
-                .setRam(8)
-                .setStorage(256)
-                .setGraphicsCard("Integrated")
-                .setOperatingSystem("Windows 10")
-                .build();
-
-        // builder supports smartphone customization so i can create one with different specifications
-        Product customizedSmartphone = new SmartphoneBuilder()
-                .setScreenSize(6.1)
-                .setProcessor("Apple A14 Bionic")
-                .setCameraResolution(12)
-                .setBatterySize(3500)
-                .setStorage(128)
-                .build();
-
-        // reading the supplier products
-        CSVReader csvReader = new CSVReader();
-
-        ArrayList<SupplierProduct> products =
-                csvReader.readProducts(fileName);
-
-        SupplierProductAdapter adapter = new CSVReader();
-
+        // this is the product we're searching for
         String productToFind = "Smartphone Model X";
-        Product defaultProduct = null;
 
-        System.out.println("\nLooking for product: " + productToFind);
+        System.out.println();
+        System.out.println("Looking for product: " + productToFind);
 
-        // searching for the default smartphone
-        for (SupplierProduct supplier : products) {
+        CSVAdapter adapter = new CSVAdapter();
 
-            String csvLine = supplier.getProductName() + ","
-                    + supplier.getProcessor() + ","
-                    + supplier.getRam() + ","
-                    + supplier.getStorage() + ","
-                    + supplier.getIntegrated() + ","
-                    + supplier.getOperatingSystem() + ","
-                    + supplier.getPrice();
+        Product foundProduct = null;
 
-            System.out.println("Processing line: " + csvLine);
+        // starts at 1 to skip the CSV header
+        for (int i = 1; i < csvLines.size(); i++) {
 
-            System.out.println("Checking against CSV product name: "
-                    + supplier.getProductName());
+            String line = csvLines.get(i);
 
-            if (supplier.getProductName().equals(productToFind)) {
+            if (line.trim().isEmpty()) {
+                continue; // skips empty lines
+            }
 
-                // adapter converts supplier data into our product
-                defaultProduct = adapter.adapt(supplier);
+            System.out.println("Processing line: " + line);
+
+            // gets the product name from the first column
+            String[] data = line.split(",", -1);
+
+            String csvName = data[0].trim();
+
+            System.out.println("Checking against CSV product name: " + csvName);
+
+            // checks if we found the product we wanted
+            if (csvName.equalsIgnoreCase(productToFind)) {
+
+                foundProduct = adapter.toProduct(line);
 
                 System.out.println("Product found and built: "
-                        + supplier.getProductName());
+                        + foundProduct.getName());
 
-                break;
+                break; // stops searching once we find it
             }
         }
 
-        // showing the customized laptop
-        System.out.println("\nCUSTOMIZED PRODUCT:");
-        customizedLaptop.displayDetails();
-
-        // showing the default product from csv
-        System.out.println("\nDEFAULT PRODUCT FROM CSV:");
-
-        if (defaultProduct != null) {
-            defaultProduct.displayDetails();
-        } else {
+        if (foundProduct == null) {
             System.out.println("Product not found.");
+            return;
         }
+
+        // creates the director from our UML
+        ProductDirector director = new ProductDirector();
+
+        // creates a laptop builder
+        ProductBuilder laptopBuilder = new LaptopBuilder();
+
+        // customizes the laptop like the professor's example
+        laptopBuilder.setAttribute("name", "Laptop");
+        laptopBuilder.setAttribute("processor", "Intel i5");
+        laptopBuilder.setAttribute("ram", "8");
+        laptopBuilder.setAttribute("storage", "256");
+        laptopBuilder.setAttribute("graphicscard", "Integrated");
+        laptopBuilder.setAttribute("operatingsystem", "Windows 10");
+        laptopBuilder.setAttribute("price", "800");
+
+        // director builds our customized laptop
+        Product customizedProduct = director.construct(laptopBuilder);
+
+        System.out.println();
+        System.out.println("CUSTOMIZED PRODUCT:");
+        customizedProduct.displayDetails();
+
+        System.out.println();
+        System.out.println("DEFAULT PRODUCT FROM CSV:");
+        foundProduct.displayDetails();
     }
 }
 

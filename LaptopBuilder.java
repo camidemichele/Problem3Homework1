@@ -1,61 +1,60 @@
-
 /**
- * builds a laptop by choosing its specifications
+ * builds laptops with custom specifications.
  */
 public class LaptopBuilder implements ProductBuilder {
 
-    private String processor;
-    private int ram;
-    private int storage;
-    private String graphicsCard;
-    private String operatingSystem;
+    private String name = "Laptop";
+    private String processor = "";
+    private String ram = "";
+    private String storage = "";
+    private String graphicsCard = "";
+    private String operatingSystem = "";
+    private double price = 800;
 
-    /**
-     * sets the laptop processor
-     */
-    public LaptopBuilder setProcessor(String processor) {
-        this.processor = processor;
-        return this;
+    /** changes a laptop attribute. */
+    @Override
+    public ProductBuilder setAttribute(String attribute, String value) {
+
+        // checks which detail we want to change
+        switch (attribute.toLowerCase()) {
+            case "name":
+                name = value;
+                break;
+            case "processor":
+                processor = value;
+                break;
+            case "ram":
+                ram = value;
+                break;
+            case "storage":
+                storage = value;
+                break;
+            case "graphicscard":
+                graphicsCard = value;
+                break;
+            case "operatingsystem":
+                operatingSystem = value;
+                break;
+            case "price":
+                price = Double.parseDouble(value);
+                break;
+        }
+
+        return this; // lets us keep adding attributes
     }
 
-    /**
-     * sets the laptop RAM
-     */
-    public LaptopBuilder setRam(int ram) {
-        this.ram = ram;
-        return this;
-    }
-
-    /**
-     * sets the laptop storage
-     */
-    public LaptopBuilder setStorage(int storage) {
-        this.storage = storage;
-        return this;
-    }
-
-    /**
-     * sets the graphics card
-     */
-    public LaptopBuilder setGraphicsCard(String graphicsCard) {
-        this.graphicsCard = graphicsCard;
-        return this;
-    }
-
-    /**
-     * sets the operating system
-     */
-    public LaptopBuilder setOperatingSystem(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    /**
-     * creates the finished laptop
-     */
+    /** creates the finished laptop. */
     @Override
     public Product build() {
-        return new Laptop(processor, ram, storage,
-                graphicsCard, operatingSystem);
+
+        // puts the specs in the format from the sample
+        String specs = "{Processor=" + processor
+                + ", Storage=" + storage + "GB"
+                + ", Graphics Card=" + graphicsCard
+                + ", Operating System=" + operatingSystem
+                + ", RAM=" + ram + "}";
+
+        return new Laptop(name, specs, price);
     }
 }
+

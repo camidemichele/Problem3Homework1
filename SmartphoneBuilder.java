@@ -1,61 +1,58 @@
-
 /**
- * builds a smartphone by choosing its specifications.
+ * builds smartphones with custom specifications.
  */
 public class SmartphoneBuilder implements ProductBuilder {
 
-    private double screenSize;
-    private String processor;
-    private int cameraResolution;
-    private int batterySize;
-    private int storage;
+    private String name = "Smartphone";
+    private String processor = "";
+    private String ram = "";
+    private String storage = "";
+    private String graphicsCard = "";
+    private String operatingSystem = "";
+    private double price = 800;
 
-    /**
-     * sets the screen size.
-     */
-    public SmartphoneBuilder setScreenSize(double screenSize) {
-        this.screenSize = screenSize;
-        return this;
+    /** changes a smartphone attribute. */
+    @Override
+    public ProductBuilder setAttribute(String attribute, String value) {
+
+        // checks which phone detail we're changing
+        switch (attribute.toLowerCase()) {
+            case "name":
+                name = value;
+                break;
+            case "processor":
+                processor = value;
+                break;
+            case "ram":
+                ram = value;
+                break;
+            case "storage":
+                storage = value;
+                break;
+            case "graphicscard":
+                graphicsCard = value;
+                break;
+            case "operatingsystem":
+                operatingSystem = value;
+                break;
+            case "price":
+                price = Double.parseDouble(value);
+                break;
+        }
+
+        return this; // lets us keep customizing
     }
 
-    /**
-     * sets the processor.
-     */
-    public SmartphoneBuilder setProcessor(String processor) {
-        this.processor = processor;
-        return this;
-    }
-
-    /**
-     * sets the camera resolution.
-     */
-    public SmartphoneBuilder setCameraResolution(int cameraResolution) {
-        this.cameraResolution = cameraResolution;
-        return this;
-    }
-
-    /**
-     * sets the battery size.
-     */
-    public SmartphoneBuilder setBatterySize(int batterySize) {
-        this.batterySize = batterySize;
-        return this;
-    }
-
-    /**
-     * sets the storage.
-     */
-    public SmartphoneBuilder setStorage(int storage) {
-        this.storage = storage;
-        return this;
-    }
-
-    /**
-     * creates the finished smartphone.
-     */
+    /** creates the finished smartphone. */
     @Override
     public Product build() {
-        return new Smartphone(screenSize, processor,
-                cameraResolution, batterySize, storage);
+
+        String specs = "{Processor=" + processor
+                + ", Storage=" + storage
+                + ", Graphics Card=" + graphicsCard
+                + ", Operating System=" + operatingSystem
+                + ", RAM=" + ram + "}";
+
+        return new Smartphone(name, specs, price);
     }
 }

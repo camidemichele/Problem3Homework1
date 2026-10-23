@@ -1,5 +1,5 @@
 /**
- * builds laptops with custom specifications.
+ * builds the laptops with the custom specifications.
  */
 public class LaptopBuilder implements ProductBuilder {
 
@@ -15,7 +15,7 @@ public class LaptopBuilder implements ProductBuilder {
     @Override
     public ProductBuilder setAttribute(String attribute, String value) {
 
-        // checks which detail we want to change
+        // checks what to change
         switch (attribute.toLowerCase()) {
             case "name":
                 name = value;

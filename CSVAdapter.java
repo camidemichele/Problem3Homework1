@@ -1,12 +1,12 @@
 /**
- * converts CSV product information into our product objects.
+ * converts the CSV product information into the product objects.
  */
 public class CSVAdapter {
 
     /** converts a CSV line into a product. */
     public Product toProduct(String csvLine) {
 
-        // splits the csv line into its different values
+        // here it splits the csv line into its different values
         String[] data = csvLine.split(",", -1);
 
         // makes sure the line has all seven columns

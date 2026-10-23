@@ -16,7 +16,7 @@ public class Main {
 
         System.out.println("CSV Contents:");
 
-        // reads the CSV file and prints its contents
+        // reads the CSV file and prints the contents of each
         try (BufferedReader reader = new BufferedReader(
                 new FileReader("products.csv"))) {
 
@@ -31,8 +31,6 @@ public class Main {
             System.out.println("Error reading CSV: " + e.getMessage());
             return;
         }
-
-        // this is the product we're searching for
         String productToFind = "Smartphone Model X";
 
         System.out.println();

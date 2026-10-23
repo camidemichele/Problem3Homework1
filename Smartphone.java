@@ -1,5 +1,5 @@
 /**
- * represents a smartphone product.
+ * this represents a smartphone product.
  */
 public class Smartphone extends Product {
 
